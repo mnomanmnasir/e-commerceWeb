@@ -1,130 +1,85 @@
-let navbar = document.querySelector('.navbar')
+const modal = document.querySelector('[data-modal]');
+const modalCloseBtn = document.querySelector('[data-modal-close]');
+const modalCloseOverlay = document.querySelector('[data-modal-overlay]');
 
-document.querySelector('#menu-bar').onclick = () =>{
-    navbar.classList.toggle('active');
-}
+// modal function
+const modalCloseFunc = function () { modal.classList.add('closed') }
 
-document.querySelector('#close').onclick = () =>{
-    navbar.classList.remove('active');
-}
+// modal eventListener
+modalCloseOverlay.addEventListener('click', modalCloseFunc);
+modalCloseBtn.addEventListener('click', modalCloseFunc);
 
-window.onscroll = () =>{
 
-    navbar.classList.remove('active');
 
-    if(window.scrollY > 100){
-        document.querySelector('header').classList.add('active');
-    }else{
-        document.querySelector('header').classList.remove('active');
-    }
 
-}
 
-let themeToggler = document.querySelector('#theme-toggler');
+// notification toast variables
+const notificationToast = document.querySelector('[data-toast]');
+const toastCloseBtn = document.querySelector('[data-toast-close]');
 
-themeToggler.onclick = () =>{
-    themeToggler.classList.toggle('fa-sun');
-    if(themeToggler.classList.contains('fa-sun')){
-        document.querySelector('body').classList.add('active');
-    }else{
-        document.querySelector('body').classList.remove('active');
-    }
-}
-
-document.querySelectorAll('.small-image-1').forEach(images =>{
-    images.onclick = () =>{
-        document.querySelector('.big-image-1').src = images.getAttribute('src');
-    }
+// notification toast eventListener
+toastCloseBtn.addEventListener('click', function () {
+  notificationToast.classList.add('closed');
 });
 
-document.querySelectorAll('.small-image-2').forEach(images =>{
-    images.onclick = () =>{
-        document.querySelector('.big-image-2').src = images.getAttribute('src');
-    }
-});
 
-document.querySelectorAll('.small-image-3').forEach(images =>{
-    images.onclick = () =>{
-        document.querySelector('.big-image-3').src = images.getAttribute('src');
-    }
-});
 
-let countDate = new Date('aug 1, 2021 00:00:00').getTime();
 
-function countDown(){
 
-    let now = new Date().getTime();
-	gap = countDate - now;
+// mobile menu variables
+const mobileMenuOpenBtn = document.querySelectorAll('[data-mobile-menu-open-btn]');
+const mobileMenu = document.querySelectorAll('[data-mobile-menu]');
+const mobileMenuCloseBtn = document.querySelectorAll('[data-mobile-menu-close-btn]');
+const overlay = document.querySelector('[data-overlay]');
 
-    let seconds = 1000;
-    let minutes = seconds * 60;
-    let hours = minutes * 60;
-    let days = hours * 24;
+for (let i = 0; i < mobileMenuOpenBtn.length; i++) {
 
-    let d = Math.floor(gap / (days));
-	let h = Math.floor((gap % (days)) / (hours));
-	let m = Math.floor((gap % (hours)) / (minutes));
-	let s = Math.floor((gap % (minutes)) / (seconds));
+  // mobile menu function
+  const mobileMenuCloseFunc = function () {
+    mobileMenu[i].classList.remove('active');
+    overlay.classList.remove('active');
+  }
 
-    document.getElementById('days').innerText = d;
-    document.getElementById('hours').innerText = h;
-    document.getElementById('minutes').innerText = m;
-    document.getElementById('seconds').innerText = s;
+  mobileMenuOpenBtn[i].addEventListener('click', function () {
+    mobileMenu[i].classList.add('active');
+    overlay.classList.add('active');
+  });
+
+  mobileMenuCloseBtn[i].addEventListener('click', mobileMenuCloseFunc);
+  overlay.addEventListener('click', mobileMenuCloseFunc);
 
 }
 
-setInterval(function(){
-    countDown()
-},1000);
 
-var swiper = new Swiper(".product-slider", {
-    slidesPerView: 3,
-    loop:true,
-    spaceBetween: 10,
-    autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-    },
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-    breakpoints: {
-        0: {
-            slidesPerView: 1,
-        },
-        550: {
-          slidesPerView: 2,
-        },
-        800: {
-          slidesPerView: 3,
-        },
-        1000: {
-            slidesPerView: 3,
-        },
-    },
-});
 
-var swiper = new Swiper(".review-slider", {
-    slidesPerView: 3,
-    loop:true,
-    spaceBetween: 10,
-    autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-    },
-    breakpoints: {
-        0: {
-            slidesPerView: 1,
-        },
-        550: {
-          slidesPerView: 2,
-        },
-        800: {
-          slidesPerView: 3,
-        },
-        1000: {
-            slidesPerView: 3,
-        },
-    },
-});
+
+
+// accordion variables
+const accordionBtn = document.querySelectorAll('[data-accordion-btn]');
+const accordion = document.querySelectorAll('[data-accordion]');
+
+for (let i = 0; i < accordionBtn.length; i++) {
+
+  accordionBtn[i].addEventListener('click', function () {
+
+    const clickedBtn = this.nextElementSibling.classList.contains('active');
+
+    for (let i = 0; i < accordion.length; i++) {
+
+      if (clickedBtn) break;
+
+      if (accordion[i].classList.contains('active')) {
+
+        accordion[i].classList.remove('active');
+        accordionBtn[i].classList.remove('active');
+
+      }
+
+    }
+
+    this.nextElementSibling.classList.toggle('active');
+    this.classList.toggle('active');
+
+  });
+
+}
